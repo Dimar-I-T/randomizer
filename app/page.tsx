@@ -5,7 +5,7 @@ import Image from "next/image";
 import React, { ReactHTMLElement, useEffect, useRef, useState } from "react";
 
 export default function Page() {
-    const [input, setInput] = useState<number[]>([2, 2, 2]);
+    const [input, setInput] = useState<number[]>([4, 4, 20]);
     const [output, setOutput] = useState<number[]>([0, 0, 0]);
     const [modulo, setModulo] = useState<number>(input[2] + 1);
     const inputString = ['x', 'y', 'z'];
