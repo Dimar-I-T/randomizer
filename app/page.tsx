@@ -1,103 +1,105 @@
+'use client'
+import { Input } from "@/components/ui/input";
+import { M_PLUS_1 } from "next/font/google";
 import Image from "next/image";
+import React, { ReactHTMLElement, useEffect, useRef, useState } from "react";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+export default function Page() {
+    const [input, setInput] = useState<number[]>([2, 2, 2]);
+    const [output, setOutput] = useState<number[]>([0, 0, 0]);
+    const [modulo, setModulo] = useState<number>(input[2] + 1);
+    const inputString = ['x', 'y', 'z'];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    const handleChange = (e: React.FormEvent<HTMLInputElement>, i: number) => {
+        let inputBaru: number[] = [...input];
+        inputBaru[i] = Number(e.currentTarget.value);
+        if (i == 2) {
+            setModulo(inputBaru[i] + 1);
+        }
+
+        setInput(inputBaru);
+    }
+
+    const handleClick = () => {
+        let outputBaru: number[] = [...output];
+        for (let x = 0; x < outputBaru.length; x++) {
+            outputBaru[x] = Math.floor(Math.random() * Math.pow(10, Math.ceil(Math.log10(input[x]))) % input[x] + 1);
+        }
+
+        setOutput(outputBaru);
+    }
+
+    const inputXYZ = Array.from({ length: inputString.length }, (_, i) => {
+        return (
+            <div key={i} className="flex justify-center items-center  border-white p-5">
+                <div className="flex w-auto h-auto">
+                    <h1 className="text-white text-[50px] font-bold">
+                        {inputString[i]}:
+                    </h1>
+                    <Input
+                        className="ml-5 mt-4 h-[50px] w-[60px] text-white text-[20px]"
+                        value={input[i]}
+                        onChange={(e) => handleChange(e, i)}
+                    >
+                    </Input>
+                </div>
+            </div>
+        )
+    })
+
+    const outputXYZ = Array.from({ length: output.length }, (_, i) => {
+        return (
+            <div key={i} className="flex justify-center items-center">
+                <h1 className="text-[60px] text-white font-bold">
+                    {output[i]}
+                </h1>
+            </div>
+        )
+    })
+
+    return (
+        <>
+            <div className="justify-items-center bg-black min-h-screen w-full">
+                <div className=" border-white grid grid-cols-3 h-[200px] w-full">
+                    {inputXYZ}
+                </div>
+
+                <div className="w-full h-[100px] flex justify-center items-center gap-2 mt-15">
+                    <button
+                        className="relative w-[200px] h-[100px] bg-white rounded-2xl text-[30px] text-black font-bold"
+                        onClick={() => handleClick()}
+                    >
+                        Randomize
+                    </button>
+                    <div className="border-white w-[200px] h-full flex justify-center items-center">
+                        <h1 className="text-white text-[20px] font-bold">
+                            mod:
+                        </h1>
+                        <Input
+                            className="ml-3 h-1/2 w-1/2"
+                            value={modulo}
+                            onChange={(e) => {
+                                setModulo(Number(e.currentTarget.value));
+                            }}
+                        >
+                        </Input>
+                    </div>
+                    <button
+                        className="bg-white text-black font-bold h-1/2 w-[100px] rounded-2xl"
+                        onClick={() => {
+                            let outputBaru:number[] = [...output];
+                            outputBaru[2] = outputBaru[2] % modulo + 1;
+                            setOutput(outputBaru);
+                        }}
+                    >
+                        mod
+                    </button>
+                </div>
+
+                <div className="h-[300px] w-[1000px] mt-5 grid grid-cols-3 border-white">
+                    {outputXYZ}
+                </div>
+            </div>
+        </>
+    )
 }
